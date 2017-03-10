@@ -1,21 +1,21 @@
 
 version       := "0.0.1"
 
-scalaVersion  := "2.11.7"
+scalaVersion  := "2.11.8"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
 libraryDependencies ++= {
-  val akkaV = "2.4.2"
-  val sprayV = "1.3.3"
+  val akkaV = "2.4.17"
+  val akkaHttpV = "10.0.4"
   val slickV = "3.1.1"
   Seq(
-    "com.typesafe.akka"   %%  "akka-http-experimental"    % akkaV,
-    "com.typesafe.akka"   %%  "akka-http-core"    % akkaV,
-    "com.typesafe.akka"   %%  "akka-http-testkit" % akkaV,
-    "com.typesafe.akka"	  %%  "akka-http-spray-json-experimental"	% akkaV,
+    "com.typesafe.akka"   %%  "akka-http"    % akkaHttpV,
+    "com.typesafe.akka"   %%  "akka-http-core"    % akkaHttpV,
+    "com.typesafe.akka"   %%  "akka-http-testkit" % akkaHttpV,
+    "com.typesafe.akka"	  %%  "akka-http-spray-json"	% akkaHttpV,
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
-    "com.byteslounge" %% "slick-repo" % "1.2.2",
+    "com.byteslounge" %% "slick-repo" % "1.3.1",
     "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.6.2",
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
     "org.specs2"          %%  "specs2-core"   % "2.3.11" % "test",

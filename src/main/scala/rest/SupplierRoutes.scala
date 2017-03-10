@@ -5,18 +5,20 @@ import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.{Directives, Route}
 import entities.JsonProtocol
 import persistence.entities.{SimpleSupplier, Supplier}
-import utils.{Configuration, DbModule, PersistenceModule}
+import utils.{ActorModule, Configuration, DbModule, PersistenceModule}
 import JsonProtocol._
 import SprayJsonSupport._
+
 import scala.util.{Failure, Success}
 import io.swagger.annotations._
 import javax.ws.rs.Path
-import scala.concurrent.ExecutionContext.Implicits.global
 
 @Path("/supplier")
 @Api(value = "/supplier", produces = "application/json")
-class SupplierRoutes(modules: Configuration with PersistenceModule with DbModule)  extends Directives {
+class SupplierRoutes(modules: Configuration with PersistenceModule with DbModule with ActorModule)  extends Directives {
   import modules.executeOperation
+
+  import modules.system.dispatcher
 
   @Path("/{id}")
   @ApiOperation(value = "Return Supplier", notes = "", nickname = "", httpMethod = "GET")

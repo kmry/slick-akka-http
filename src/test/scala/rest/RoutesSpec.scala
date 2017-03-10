@@ -7,11 +7,8 @@ import akka.http.scaladsl.model.StatusCodes._
 import JsonProtocol._
 import SprayJsonSupport._
 import akka.http.scaladsl.server.ValidationRejection
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll}
 import slick.dbio.DBIOAction
-
-import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 
 class RoutesSpec extends AbstractRestTest {
 
@@ -22,7 +19,7 @@ class RoutesSpec extends AbstractRestTest {
   "Supplier Routes" should {
 
     "return an empty array of suppliers" in {
-      val dbAction: modules.suppliersDal.driver.api.DBIO[Option[Supplier]] = DBIOAction.from(Future(None))
+      val dbAction = DBIOAction.from(Future(None))
       modules.suppliersDal.findOne(1) returns dbAction
       Get("/supplier/1") ~> suppliers.routes ~> check {
         handled shouldEqual true
@@ -31,7 +28,7 @@ class RoutesSpec extends AbstractRestTest {
     }
 
     "return an empty array of suppliers when ask for supplier Bad Request when the supplier is < 1" in {
-      val dbAction: modules.suppliersDal.driver.api.DBIO[Option[Supplier]] = DBIOAction.from(Future(None))
+      val dbAction = DBIOAction.from(Future(None))
       modules.suppliersDal.findOne(1) returns dbAction
       Get("/supplier/0") ~> suppliers.routes ~> check {
         handled shouldEqual false
@@ -39,9 +36,8 @@ class RoutesSpec extends AbstractRestTest {
       }
     }
 
-
     "return an array with 1 suppliers" in {
-      val dbAction: modules.suppliersDal.driver.api.DBIO[Option[Supplier]] = DBIOAction.from(Future(Some(Supplier(Some(1), "name", "desc"))))
+      val dbAction = DBIOAction.from(Future(Some(Supplier(Some(1), "name", "desc"))))
       modules.suppliersDal.findOne(1) returns dbAction
       Get("/supplier/1") ~> suppliers.routes ~> check {
         handled shouldEqual true
@@ -51,14 +47,13 @@ class RoutesSpec extends AbstractRestTest {
     }
 
     "create a supplier with the json in post" in {
-      val dbAction: modules.suppliersDal.driver.api.DBIO[Supplier] = DBIOAction.from(Future.successful(Supplier(None,"name 1","desc 1")))
-      modules.suppliersDal.save(any[Supplier])(any[ExecutionContext]) returns dbAction
+      val dbAction = DBIOAction.from(Future.successful(Supplier(Some(1),"name 1","desc 1")))
+      modules.suppliersDal.save(Supplier(None,"name 1","desc 1")) returns dbAction
       Post("/supplier",SimpleSupplier("name 1","desc 1")) ~> suppliers.routes ~> check {
         handled shouldEqual true
         status shouldEqual Created
       }
     }
-
 
     "not handle the invalid json" in {
       Post("/supplier","{\"name\":\"1\"}") ~> suppliers.routes ~> check {
