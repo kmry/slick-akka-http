@@ -8,14 +8,14 @@ scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 libraryDependencies ++= {
   val akkaV = "2.4.17"
   val akkaHttpV = "10.0.4"
-  val slickV = "3.1.1"
+  val slickV = "3.2.0"
   Seq(
     "com.typesafe.akka"   %%  "akka-http"    % akkaHttpV,
     "com.typesafe.akka"   %%  "akka-http-core"    % akkaHttpV,
     "com.typesafe.akka"   %%  "akka-http-testkit" % akkaHttpV,
     "com.typesafe.akka"	  %%  "akka-http-spray-json"	% akkaHttpV,
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
-    "com.byteslounge" %% "slick-repo" % "1.3.1",
+    "com.byteslounge" %% "slick-repo" % "1.4.3",
     "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.6.2",
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
     "org.specs2"          %%  "specs2-core"   % "2.3.11" % "test",
