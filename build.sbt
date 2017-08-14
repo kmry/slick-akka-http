@@ -7,7 +7,7 @@ scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
 libraryDependencies ++= {
   val akkaV = "2.4.17"
-  val akkaHttpV = "10.0.4"
+  val akkaHttpV = "10.0.9"
   val slickV = "3.2.0"
   Seq(
     "com.typesafe.akka"   %%  "akka-http"    % akkaHttpV,
