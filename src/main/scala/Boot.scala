@@ -3,11 +3,11 @@ import akka.http.scaladsl.server.RouteConcatenation
 import akka.stream.ActorMaterializer
 import rest.SupplierRoutes
 import utils._
-
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-object Main extends App with RouteConcatenation with CorsSupport{
+object Main extends App with RouteConcatenation {
   // configuring modules for application, cake pattern for DI
   val modules = new ConfigurationModuleImpl  with ActorModuleImpl with PersistenceModuleImpl
   implicit val system = modules.system
@@ -17,13 +17,10 @@ object Main extends App with RouteConcatenation with CorsSupport{
   import modules.profile.api._
   Await.result(modules.db.run(modules.suppliersDal.tableQuery.schema.create), Duration.Inf)
 
-
-  val swaggerService = new SwaggerDocService(system)
-
   val bindingFuture = Http().bindAndHandle(
-    new SupplierRoutes(modules).routes ~
-    swaggerService.assets ~
-    corsHandler(swaggerService.routes), "localhost", 8080)
+    cors()(new SupplierRoutes(modules).routes ~
+    SwaggerDocService.assets ~
+    SwaggerDocService.routes), "localhost", 8080)
 
   println(s"Server online at http://localhost:8080/")
 
